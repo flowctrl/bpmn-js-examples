@@ -32,7 +32,7 @@ module.exports = function(grunt) {
     browserify: {
       options: {
         browserifyOptions: {
-          debug: true,
+          debug: false,
           list: true,
           // make sure we do not include browser shims unnecessarily
           insertGlobalVars: {

@@ -15,6 +15,9 @@ var canvas = $('#js-canvas');
 
 var bpmnModeler = new BpmnModeler({
   container: canvas,
+  keyboard: {
+    bindTo: document
+  },
   propertiesPanel: {
     parent: '#js-properties-panel'
   },
@@ -115,12 +118,27 @@ if (!window.FileList || !window.FileReader) {
 
 $(document).on('ready', function() {
 
+  var processId = $('#process_id').val();
+  var contextPath = $('#context_path').val();
+  if (processId === '') {
+    createNewDiagram();
+  } else {
+    $.ajax({
+      type : "GET",
+      url : contextPath + "/bpmn/" + processId + "/bpmn",
+      success : function(xml) {
+        openDiagram(xml);
+      }
+    });
+  }
+  /*
   $('#js-create-diagram').click(function(e) {
     e.stopPropagation();
     e.preventDefault();
 
     createNewDiagram();
   });
+  */
 
   var downloadLink = $('#js-download-diagram');
   var downloadSvgLink = $('#js-download-svg');
@@ -155,6 +173,11 @@ $(document).on('ready', function() {
 
     saveDiagram(function(err, xml) {
       setEncoded(downloadLink, 'diagram.bpmn', err ? null : xml);
+      if (err) {
+        $('#js-server-save').removeClass('active');
+      } else {
+        $('#js-server-save').addClass('active');
+      }
     });
   }, 500);
 
