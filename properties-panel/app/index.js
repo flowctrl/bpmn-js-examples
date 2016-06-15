@@ -118,8 +118,8 @@ if (!window.FileList || !window.FileReader) {
 
 $(document).on('ready', function() {
 
-  var processId = $('#process_id').val();
-  var contextPath = $('#context_path').val();
+  var processId = window.pal.process_id;
+  var contextPath = window.context_path;
   if (processId === '') {
     createNewDiagram();
   } else {
