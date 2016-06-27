@@ -168,7 +168,7 @@ $(document).on('ready', function() {
   var exportArtifacts = debounce(function() {
 
     saveSVG(function(err, svg) {
-      setEncoded(downloadSvgLink, 'diagram.svg', err ? null : svg);
+      setEncoded(downloadSvgLink, 'diagram.svg', err ? null : window.hackSaveSVG(svg));
     });
 
     saveDiagram(function(err, xml) {
