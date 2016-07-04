@@ -9,6 +9,8 @@ var propertiesPanelModule = require('bpmn-js-properties-panel'),
     propertiesProviderModule = require('bpmn-js-properties-panel/lib/provider/camunda'),
     camundaModdleDescriptor = require('camunda-bpmn-moddle/resources/camunda');
 
+var blobUtil = require("blob-util");
+
 var container = $('#js-drop-zone');
 
 var canvas = $('#js-canvas');
@@ -144,10 +146,27 @@ $(document).on('ready', function() {
   var downloadSvgLink = $('#js-download-svg');
 
   $('.buttons a').click(function(e) {
-    if (!$(this).is('.active')) {
+    var $this = $(this);
+    if (!$this.is('.active')) {
       e.preventDefault();
       e.stopPropagation();
     }
+
+    // IE >= 10 의 경우 브라우저의 msSaveBlob 를 통해 다운로드
+    if (typeof window.navigator.msSaveBlob == 'function') {
+      e.preventDefault();
+      e.stopPropagation();
+
+      var dataType = 'data:application/bpmn20-xml;charset=UTF-8,';
+      var dataURL = dataType + window.btoa(decodeURIComponent($this.attr('href').substring(dataType.length)));
+      var download = $this.attr('download');
+      blobUtil.dataURLToBlob(dataURL).then(function (blob) {
+        window.navigator.msSaveBlob(blob, download);
+      }).catch(function (err) {
+        alert('XML 저장 중 에러 발생 : ' + err);
+      });
+    }
+
   });
 
   function setEncoded(link, name, data) {
