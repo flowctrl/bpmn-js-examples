@@ -153,7 +153,7 @@ $(document).on('ready', function() {
     }
 
     // IE >= 10 의 경우 브라우저의 msSaveBlob 를 통해 다운로드
-    if (typeof window.navigator.msSaveBlob == 'function') {
+    if ($this.is('.active') && typeof window.navigator.msSaveBlob == 'function') {
       e.preventDefault();
       e.stopPropagation();
 
@@ -163,7 +163,7 @@ $(document).on('ready', function() {
       blobUtil.dataURLToBlob(dataURL).then(function (blob) {
         window.navigator.msSaveBlob(blob, download);
       }).catch(function (err) {
-        alert('XML 저장 중 에러 발생 : ' + err);
+        window.alert('XML 저장 중 에러 발생 : ' + err);
       });
     }
 
