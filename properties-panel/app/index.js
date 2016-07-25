@@ -17,6 +17,9 @@ var canvas = $('#js-canvas');
 
 var bpmnModeler = new BpmnModeler({
   container: canvas,
+  zoomScroll: {
+    enabled: (window.pal.consumer != 'hwenc')
+  },
   keyboard: {
     bindTo: document
   },
@@ -33,9 +36,14 @@ var bpmnModeler = new BpmnModeler({
 });
 
 var newDiagramXML = fs.readFileSync(__dirname + '/../resources/newDiagram.bpmn', 'utf-8');
+var emptyDiagramXML = fs.readFileSync(__dirname + '/../resources/emptyDiagram.bpmn', 'utf-8');
 
 function createNewDiagram() {
-  openDiagram(newDiagramXML);
+  if (window.pal.consumer != 'hwenc') {
+    openDiagram(newDiagramXML);
+  } else {
+    openDiagram(emptyDiagramXML);
+  }
 }
 
 function openDiagram(xml) {
