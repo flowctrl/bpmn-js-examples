@@ -161,7 +161,8 @@ $(document).on('ready', function() {
     }
 
     // IE >= 10 의 경우 브라우저의 msSaveBlob 를 통해 다운로드
-    if ($this.is('.active') && typeof window.navigator.msSaveBlob == 'function') {
+    var domId = $this.attr('id');
+    if ($this.is('.active') && (domId == 'js-download-diagram' || domId == 'js-download-svg') && typeof window.navigator.msSaveBlob == 'function') {
       e.preventDefault();
       e.stopPropagation();
 
